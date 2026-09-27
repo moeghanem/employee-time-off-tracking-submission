@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fa">
+  <title>Time off · Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Demo People home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="5.5" width="17" height="15" rx="2"></rect><path d="M7.5 3.5v4M16.5 3.5v4M3.5 10h17M8 14h2M13 14h3M8 17h2"></path></svg></span>
+      <span><strong id="company-name">Demo</strong><small>People</small></span>
+    </a>
+    <div class="topbar-tools">
+      <span class="demo-label">Demo profile</span>
+      <select id="persona" aria-label="Choose a demo profile">
+        <option value="demo-avery">Employee · Avery</option>
+        <option value="demo-manager">Manager · Lee</option>
+        <option value="demo-nora">Unlimited PTO · Nora</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div id="person-card" class="person-card">
+        <span id="person-avatar" class="avatar">AM</span>
+        <span><strong id="person-name">Loading…</strong><small id="person-role">Employee</small></span>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview" type="button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"></rect></svg></span> Overview</button>
+        <button class="nav-item" data-view="people" type="button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="9" cy="8" r="3.25"></circle><path d="M3.5 19.5v-1.25A4.25 4.25 0 0 1 7.75 14h2.5a4.25 4.25 0 0 1 4.25 4.25v1.25M16 5.1a3.25 3.25 0 0 1 0 6.3M17 14.2a4.2 4.2 0 0 1 3.5 4.15v1.15"></path></svg></span> People</button>
+        <button class="nav-item" data-view="calendar" type="button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="3.5" y="5" width="17" height="15.5" rx="2"></rect><path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17M8 13h2M13 13h3M8 16.5h2"></path></svg></span> Team calendar</button>
+        <button class="nav-item" data-view="requests" type="button"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 4.5h10a2 2 0 0 1 2 2v13H5v-13a2 2 0 0 1 2-2Z"></path><path d="M9 4.5v-1h6v1M8.5 10h7M8.5 14h7M8.5 17h4"></path></svg></span> Requests <span id="pending-nav-count" class="nav-count" hidden></span></button>
+        <button id="manager-nav" class="nav-item" data-view="manager" type="button" hidden><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 20h16M6 20V9l6-5 6 5v11M9 12h6M9 15.5h6"></path><path d="M10 20v-2.5h4V20"></path></svg></span> Team & settings</button>
+      </nav>
+      <div class="sidebar-foot"><span class="online-dot"></span> Local demo</div>
+    </aside>
+
+    <main id="main-content">
+      <div id="page-header" class="page-header">
+        <div><p id="eyebrow" class="eyebrow">TIME OFF</p><h1 id="page-title">My time off</h1><p id="page-subtitle" class="subtitle">Your balance and upcoming leave.</p></div>
+        <button id="request-open" class="button primary" type="button">Request time off</button>
+      </div>
+      <div id="status" class="notice" role="status" aria-live="polite" hidden></div>
+
+      <section id="request-panel" class="panel request-panel" aria-labelledby="request-heading" hidden>
+        <div class="panel-head"><div><h2 id="request-heading">Request time off</h2><p>Choose dates and review the scheduled days before submitting.</p></div><button id="request-close" class="icon-button" type="button" aria-label="Close request form">×</button></div>
+        <div class="request-grid">
+          <div class="request-fields">
+            <div class="field"><label for="request-category">Leave type</label><select id="request-category"><option value="vacation">Vacation</option></select></div>
+            <div class="field-row">
+              <div class="field"><label id="start-label" for="start-date">First day</label><input id="start-date" type="date"></div>
+              <div id="end-field" class="field"><label for="end-date">Last day</label><input id="end-date" type="date"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="leave-unit">Duration</label><select id="leave-unit"><option value="full_day">Full day(s)</option><option value="half_day">Half day</option></select></div>
+              <div id="half-field" class="field" hidden><label for="half-period">Half day</label><select id="half-period"><option value="morning">Morning</option><option value="afternoon">Afternoon</option></select></div>
+            </div>
+            <div class="field"><label for="request-reason">Reason <span aria-hidden="true">*</span></label><textarea id="request-reason" rows="2" maxlength="240" required aria-describedby="reason-help"></textarea><p id="reason-help" class="help">Brief note for your manager. Please leave out medical or other sensitive details.</p></div>
+            <p id="request-help" class="help">Full days follow the work schedule. Weekends and company holidays are not charged.</p>
+            <div class="form-actions"><button id="calculate-button" class="button secondary" type="button">Review request</button><button id="submit-button" class="button primary" type="button" disabled>Submit request</button></div>
+          </div>
+          <aside id="quote-card" class="quote-card" hidden><span class="quote-kicker">TIME AWAY</span><strong id="quote-total">—</strong><p id="quote-detail">—</p><p id="quote-funding" class="quote-funding"></p></aside>
+        </div>
+      </section>
+
+      <section id="overview-view" class="view">
+        <div class="overview-top">
+          <article class="panel balance-panel">
+            <div class="balance-top"><div><p class="eyebrow">VACATION</p><h2>Available to request</h2></div><span id="balance-asof" class="muted">—</span></div>
+            <div id="balance-value" class="balance-value">—</div>
+            <p id="balance-caption" class="balance-caption">—</p>
+            <div id="balance-note" class="balance-note"></div>
+            <div class="balance-footer"><span id="accrual-label">Accrual</span><strong id="accrual-value">—</strong><span class="separator">·</span><span>Workday</span><strong id="workday-value">—</strong></div>
+          </article>
+          <article class="panel projection-panel">
+            <div class="panel-head compact"><div><h2>Plan ahead</h2><p>Estimate your available balance on a future date.</p></div></div>
+            <div id="projection-employee-field" class="field" hidden><label for="projection-employee">View balance for</label><select id="projection-employee"></select></div>
+            <div class="field projection-date"><label for="projection-date">Balance date</label><input id="projection-date" type="date"></div>
+            <div id="projection-result" class="projection-result" aria-live="polite"><p class="muted">Choose a date to see your estimate.</p></div>
+            <p class="microcopy">Requests through that date are already held once. The estimate also accounts for later bookings and expiring credits.</p>
+          </article>
+        </div>
+
+        <section class="panel upcoming-panel">
+          <div class="panel-head"><div><h2>Coming up</h2><p id="upcoming-description">Your approved time away.</p></div><button class="text-button" data-go="calendar" type="button">Open calendar →</button></div>
+          <div id="upcoming-list" class="upcoming-list"></div>
+        </section>
+
+        <section id="team-overview" class="panel team-overview" hidden>
+          <div class="panel-head"><div><h2>Team snapshot</h2><p>Balances and requests across the company.</p></div><button class="text-button" data-go="manager" type="button">Manage team →</button></div>
+          <div class="table-scroll"><table><thead><tr><th>Employee</th><th>Available</th><th>Workday</th><th>Upcoming</th><th>Pending</th></tr></thead><tbody id="team-summary"></tbody></table></div>
+        </section>
+      </section>
+
+      <section id="people-view" class="view" hidden>
+        <div class="directory-intro panel"><div><p class="eyebrow">PEOPLE</p><h2>Team and reporting lines</h2><p id="directory-scope" class="muted">Your reporting group.</p></div><strong id="directory-count" class="directory-count">— people</strong></div>
+        <div id="org-chart" class="org-chart" aria-label="Reporting hierarchy"></div>
+        <p class="level-legend">Job levels describe role ladders (IC and management tracks); they are not performance ratings.</p>
+      </section>
+
+      <section id="calendar-view" class="view" hidden>
+        <div class="calendar-toolbar panel">
+          <div class="month-switch"><button id="month-prev" class="icon-button" type="button" aria-label="Previous month">‹</button><h2 id="month-label" aria-live="polite">—</h2><button id="month-next" class="icon-button" type="button" aria-label="Next month">›</button><button id="month-today" class="button small secondary" type="button">Today</button></div>
+          <div class="calendar-actions"><span id="calendar-legend" class="legend"><i class="legend-leave"></i> Time off <i class="legend-holiday"></i> Company holiday</span></div>
+        </div>
+        <p id="calendar-hint" class="calendar-hint">Click a day for one full day. Click another date or drag across the calendar to select a range.</p>
+        <div id="calendar-selection-actions" class="calendar-selection-actions" hidden>
+          <div class="selection-copy"><p id="calendar-prompt" class="selection-prompt" aria-live="polite">One day selected. Choose another date to extend the range.</p><span id="selected-range" role="status" aria-live="polite">—</span></div>
+          <button id="request-selected" class="button primary" type="button">Continue to request</button>
+          <button id="clear-calendar-selection" class="text-button" type="button">Clear</button>
+        </div>
+        <div class="calendar-scroll"><div id="calendar-grid" class="calendar-grid" role="group" aria-label="Team calendar"></div></div>
+        <section class="calendar-agenda panel"><div class="panel-head"><div><h2>Time away this month</h2><p>Approved leave, visible pending requests, and company holidays.</p></div></div><ol id="calendar-agenda-list" class="agenda-list"></ol><p id="calendar-agenda-empty" class="empty-inline" hidden>No visible time off or holidays this month.</p></section>
+      </section>
+
+      <section id="requests-view" class="view" hidden>
+        <div class="filter-bar panel"><div><h2>Time off requests</h2><p id="request-scope" class="muted">Your requests and decisions.</p></div><div id="employee-filter-wrap" class="field filter-field" hidden><label for="request-employee-filter">Employee</label><select id="request-employee-filter"><option value="all">All employees</option></select></div></div>
+        <div class="request-tabs" aria-label="Filter requests">
+          <button class="request-tab active" data-bucket="upcoming" aria-pressed="true" type="button">Upcoming <span id="count-upcoming">0</span></button>
+          <button class="request-tab" data-bucket="pending" aria-pressed="false" type="button">Pending <span id="count-pending">0</span></button>
+          <button class="request-tab" data-bucket="past" aria-pressed="false" type="button">Past <span id="count-past">0</span></button>
+        </div>
+        <section class="panel bucket-panel"><div class="table-scroll"><table><thead><tr><th>Employee</th><th>Dates</th><th>Duration</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody id="request-rows"></tbody></table></div><div id="request-empty" class="empty-state" hidden><span class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 4.5h10a2 2 0 0 1 2 2v13H5v-13a2 2 0 0 1 2-2Z"></path><path d="M8.5 10h7M8.5 14h7M8.5 17h4"></path></svg></span><h3 id="empty-title">Nothing here yet</h3><p id="empty-copy">Time-off requests will appear here.</p></div></section>
+      </section>
+
+      <section id="manager-view" class="view" hidden>
+        <div class="settings-grid">
+          <section class="panel settings-panel"><div class="panel-head"><div><h2>Work schedule</h2><p>Choose any employee in the company. Pending leave is recalculated; approved leave stays as agreed.</p></div></div>
+            <div class="field"><label for="schedule-employee">Employee schedule</label><select id="schedule-employee"></select></div>
+            <div class="field-row settings-row"><div class="field"><label for="schedule-hours">Hours per workday</label><input id="schedule-hours" type="number" min="1" max="16" step="0.5" value="8"></div><div class="field"><label for="schedule-start">Workday starts</label><select id="schedule-start"></select></div></div>
+            <fieldset class="weekday-fieldset"><legend>Working days</legend><div id="weekday-options" class="weekday-options"></div></fieldset>
+            <div class="field"><label for="schedule-effective">Effective date</label><input id="schedule-effective" type="date"></div>
+            <div class="form-actions"><button id="save-schedule" class="button primary" type="button">Save schedule</button></div>
+          </section>
+          <section class="panel settings-panel"><div class="panel-head"><div><h2>Borrowing limit</h2><p>Set the maximum borrowed leave for employees on the Vacation policy.</p></div></div>
+            <div class="inline-note">Enter workdays per employee. Zero disables borrowing; the cap follows each employee's scheduled hours per day.</div>
+            <div class="field"><label for="borrow-days">Limit in workdays</label><input id="borrow-days" type="number" min="0" step="0.5" value="0" inputmode="decimal"></div>
+            <div id="legacy-borrowing-note" class="inline-note" hidden></div>
+            <div id="unlimited-note" class="inline-note" hidden>Unlimited leave has no balance or borrowing limit.</div>
+            <div class="field"><label for="policy-effective">Effective date</label><input id="policy-effective" type="date"></div>
+            <div class="inline-note">Existing approved and pending commitments remain in place when a limit is lowered.</div>
+            <div class="form-actions"><button id="save-policy" class="button primary" type="button">Save limit</button></div>
+          </section>
+          <section class="panel settings-panel holiday-settings"><div class="panel-head"><div><h2>Company holidays</h2><p>Start with the U.S. federal calendar or add the dates your company observes.</p></div></div>
+            <div class="holiday-tools">
+              <div class="field"><label for="holiday-year">Calendar year</label><select id="holiday-year"></select></div>
+              <button id="add-us-holidays" class="button secondary" type="button">Fill U.S. federal holidays</button>
+            </div>
+            <p class="help">This adds observed federal dates as a starting point. Review the list to match your company calendar before saving. The year applies to this preset; the saved list may include other years.</p>
+            <div class="holiday-add-row">
+              <div class="field"><label for="holiday-date">Holiday date</label><input id="holiday-date" type="date"></div>
+              <div class="field"><label for="holiday-name">Holiday name</label><input id="holiday-name" type="text" maxlength="100" placeholder="e.g. Company winter break"></div>
+              <button id="add-holiday" class="button secondary" type="button">Add date</button>
+            </div>
+            <div class="field holiday-entry-field"><span class="field-label">Dates to publish</span><ul id="holiday-entry-list" class="holiday-entry-list"></ul><p id="holiday-list-empty" class="empty-inline" hidden>No holiday dates yet. Add a date or fill the federal preset.</p></div>
+            <div class="field"><label for="holiday-effective">Effective date</label><input id="holiday-effective" type="date"></div>
+            <p class="help">The saved list replaces the company calendar from this date. Holidays are excluded from leave charges; pending requests are recalculated and approved leave stays as agreed.</p>
+            <div class="form-actions"><button id="save-holidays" class="button primary" type="button">Save holidays</button></div>
+          </section>
+        </div>
+        <section class="panel team-table-panel"><div class="panel-head"><div><h2>All employees</h2><p>Balances, roles, and request activity across the company.</p></div></div><div class="table-scroll"><table><thead><tr><th>Employee</th><th>Title / level</th><th>Manager</th><th>Available</th><th>Workday</th><th>Requests</th></tr></thead><tbody id="manager-team-rows"></tbody></table></div></section>
+      </section>
+
+      <details id="history-panel" class="panel history-panel"><summary><span><strong>Audit history</strong><small>Recorded balance and configuration changes</small></span><span class="chevron">⌄</span></summary><ol id="history-list" class="history-list"></ol><p id="history-empty" class="muted" hidden>No recorded activity yet.</p></details>
+      <footer class="page-footer">Local demonstration · Requests and settings are stored in the demo database.</footer>
+    </main>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
