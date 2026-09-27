@@ -1,6 +1,6 @@
 # Employee time-off system
 
-The ZIP contains a local demo, a short design note, and tests for the main time-off rules.
+This submission contains a local demo, a short design note, and tests for the main time-off rules.
 
 Start with the demo, then read [DESIGN.md](DESIGN.md) for the decisions behind it. The acceptance table links each behavior to the tests that cover it.
 
@@ -39,3 +39,4 @@ The employee and manager screens include team calendars and date-range controls.
 ## Boundaries
 
 The demo runs locally with SQLite, a fixed clock, seeded profiles, and direct employee assignments. Company-defined group rules resolve into those assignments at the Employee/Company integration boundary. A rollout would connect the company's identity provider and Employee, Company, and Payroll systems. The browser focuses on Vacation; the domain supports multiple categories.
+
